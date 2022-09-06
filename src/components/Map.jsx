@@ -12,7 +12,7 @@ import Tiles from "./Tiles";
 
 const center = [50.15, 3.35];
 
-function Map({ setMap }) {
+function Map({ setMap , isEdit }) {
   
   useEffect(() => {
     let initMapLayer = localStorage.getItem("Leaflet-paths")//fetch
@@ -91,7 +91,7 @@ function Map({ setMap }) {
     >
     
       <LayersControl position="topright">{<Tiles />}</LayersControl>
-      <FeatureGroup>
+      {isEdit && <FeatureGroup>
         <EditControl
           position="topright"
           onCreated={onCreate}
@@ -106,7 +106,7 @@ function Map({ setMap }) {
             marker: false,
           }}
         />
-      </FeatureGroup>
+      </FeatureGroup>}
       {Paths}
     </MapContainer>
   );

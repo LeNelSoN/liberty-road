@@ -6,7 +6,7 @@
 			"script": "sass",
 			"problemMatcher": [],
 			"label": "npm: sass",
-			"detail": "sass --watch src/scss/index.scss : src/index.css"
+			"detail": "sass --watch src/sass/index.scss : src/index.css"
 		}
 	]
 }
