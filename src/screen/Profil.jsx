@@ -1,17 +1,12 @@
 import React from 'react'
+import FormToConnect from '../components/FormToConnect'
 
-const Profil = ({useEdit}) => {
+const Profil = () => {
 
-    const [isEdit, setIsEdit] = useEdit;
-
-    const handleClick = () => {
-        setIsEdit(!isEdit)
-    }
   return (
-    <>
-        <div>Profil</div>
-        <button className='btn' onClick={handleClick}> EDIT </button>
-    </>
+    <div className='form-container d-flex align-items-center'>
+      <FormToConnect />
+    </div>
   )
 }
 

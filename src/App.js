@@ -10,13 +10,13 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/profil" element={<Profil useEdit={useEdit}/>} />
-        <Route exact path="/home" element={<Home isEdit={isEdit}/>} />
-        <Route exact path="/paths" element={<Home />} />
-        <Route exact path="/" element={<Home />} />
-        <Route path="*" /> 
+        <Route path="/" element={<DashBoard />}> 
+          <Route exact path="/profil" element={<Profil useEdit={useEdit}/>} />
+          <Route exact path="/home" element={<Home isEdit={isEdit}/>} />
+          <Route exact path="/paths" element={<Home />} />
+          <Route path="*" />         
+        </Route>
       </Routes>
-      <DashBoard />
     </>
   );
 }
