@@ -10766,6 +10766,8 @@ textarea.form-control-lg {
 .form-container {
   height: 85vh;
   width: 100%;
+  background-image: url("../public/img/login.jpg");
+  background-size: cover;
 }
 
 /*# sourceMappingURL=index.css.map */

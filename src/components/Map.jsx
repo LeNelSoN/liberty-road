@@ -91,7 +91,8 @@ function Map({ setMap , isEdit }) {
     >
     
       <LayersControl position="topright">{<Tiles />}</LayersControl>
-      {isEdit && <FeatureGroup>
+      {isEdit &&  
+      <FeatureGroup>
         <EditControl
           position="topright"
           onCreated={onCreate}
@@ -106,7 +107,8 @@ function Map({ setMap , isEdit }) {
             marker: false,
           }}
         />
-      </FeatureGroup>}
+      </FeatureGroup>
+      } 
       {Paths}
     </MapContainer>
   );

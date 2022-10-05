@@ -12,7 +12,7 @@ function DashBoard() {
       <div className="container fixed-bottom">
         <div className="row">
           <div className="col-4 text-center"><Link to='/profil' className="btn"><CgProfile /></Link></div>
-          <div className="col-4 text-center"><Link to='/home' className="btn"><MdWhereToVote /></Link></div>
+          <div className="col-4 text-center"><Link to='/' className="btn"><MdWhereToVote /></Link></div>
           <div className="col-4 text-center"><Link to='/paths' className="btn"><FaListUl /></Link></div>
         </div>
       </div>

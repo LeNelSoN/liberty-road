@@ -1,12 +1,12 @@
-import React from 'react'
 import Map  from '../components/Map';
 
 
-const Home = () => {
+const Home = ({isEdit}) => {
+
   return (
     <>
       <div className='sticky-top'>
-        <Map/>
+        <Map isEdit={isEdit}/>
       </div>
     </>  
     )

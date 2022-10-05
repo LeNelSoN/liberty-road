@@ -1,24 +1,39 @@
 import React, { useState } from "react";
 
-function FormToConnect() {
+function FormToConnect({setAuth}) {
     const [isValidPseudo, setIsValidPseudo] = useState("");
     const [isValidPassword, setIsValidPassword] = useState("");
     const [isValidVerif, setIsValidVerif] = useState("");
-    const regexPassword = /^((?=\S?[A-Z])(?=\S?[a-z])(?=\S*?[0-9]).{5,})\S$/;
+    const regexPassword = /^((?=\S?[A-Z])(?=\S?[a-z]).{4,})\S$/;
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const formData = Object.fromEntries(new FormData(e.target));
-    const {pseudo, password, verification} = formData;
-    if (regexPassword.test(password.trim()) && pseudo.length > 2 && verification === password) {
+    const {login, password, verification} = formData;
+
+    if (regexPassword.test(password.trim()) && login.length > 2 && verification === password) {
       setIsValidPseudo("is-valid")
       setIsValidPassword("is-valid")
       setIsValidVerif("is-valid")
-      //TODO envoyer le formulaire à l'api
-      console.log("POST: ")
-      console.log(formData)
+      fetch("http://localhost:5000/api/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)  })
+        .then( res => res.ok ? res.json(): null
+        )
+        .then((data) => {
+          if(data){
+            console.log(data)
+            const {token} = data
+            document.cookie = `Bearer=${token.access_token}; path="/"`
+            setAuth(true)
+          }
+        })
+        .catch(err => console.log(err))
     }else{
-      if (pseudo.length <= 2) {
+      if (login.length <= 2) {
         setIsValidPseudo("is-invalid")
       }else{
         setIsValidPseudo("is-valid")
@@ -37,7 +52,7 @@ function FormToConnect() {
   }
 
   return (
-    <form className="container" id="connection" onSubmit={handleSubmit}>
+    <form className="container col-12 col-lg-4 rounded bg-white bg-opacity-50 py-4" id="connection" onSubmit={handleSubmit}>
       <div className="mb-5">
         <label className="form-label">
           Pseudo
@@ -47,7 +62,7 @@ function FormToConnect() {
           className={`form-control ${isValidPseudo}`}
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
-          name="pseudo"
+          name="login"
         />
       </div>
       <div className="mb-5">
@@ -71,10 +86,10 @@ function FormToConnect() {
           className={`form-control ${isValidVerif}`}
           id="exampleInputPassword1"
         />
-      {!isValidVerif && <span className="text-danger">C'est pas bon</span>}
+      {!isValidVerif && <small>La verification doit correspondre au mot de passe</small>}
       </div>
       <button type="submit" className="btn btn-primary">
-        Submit
+        Connection
       </button>
     </form>
   );
