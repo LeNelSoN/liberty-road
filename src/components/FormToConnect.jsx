@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../services/AuthContext";
+import ModalCreateAccount from "./ModalCreateAccount";
+import { regexPassword } from "../services/regexp";
 
-function FormToConnect({setAuth}) {
-    const [isValidPseudo, setIsValidPseudo] = useState("");
-    const [isValidPassword, setIsValidPassword] = useState("");
-    const [isValidVerif, setIsValidVerif] = useState("");
-    const regexPassword = /^((?=\S?[A-Z])(?=\S?[a-z]).{4,})\S$/;
+function FormToConnect() {
+    const [show, setShow] = useState(false);
+
+    const {auth, setAuth} = useContext(AuthContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -12,9 +14,6 @@ function FormToConnect({setAuth}) {
     const {login, password, verification} = formData;
 
     if (regexPassword.test(password.trim()) && login.length > 2 && verification === password) {
-      setIsValidPseudo("is-valid")
-      setIsValidPassword("is-valid")
-      setIsValidVerif("is-valid")
       fetch("http://localhost:5000/api/login", {
         method: 'POST',
         headers: {
@@ -23,75 +22,66 @@ function FormToConnect({setAuth}) {
         body: JSON.stringify(formData)  })
         .then( res => res.ok ? res.json(): null
         )
-        .then((data) => {
-          if(data){
-            console.log(data)
-            const {token} = data
+        .then((json) => {
+          if(json){
+            console.log(json)
+            const {token, data:{hikkerId, isAdmin}} = json
             document.cookie = `Bearer=${token.access_token}; path="/"`
-            setAuth(true)
+            setAuth({...auth,isAdmin,hikkerId,logged:true})
           }
         })
         .catch(err => console.log(err))
-    }else{
-      if (login.length <= 2) {
-        setIsValidPseudo("is-invalid")
-      }else{
-        setIsValidPseudo("is-valid")
-      }
-      if (!regexPassword.test(password.trim()) || verification !== password) {
-        setIsValidPassword("is-invalid")
-      }else{
-        setIsValidPassword("is-valid")
-      }
-      if (verification !== password || password.length === 0 ){
-        setIsValidVerif("is-invalid")
-      }else{
-        setIsValidVerif("is-valid")
-      }
     }
   }
 
   return (
-    <form className="container col-12 col-lg-4 rounded bg-white bg-opacity-50 py-4" id="connection" onSubmit={handleSubmit}>
-      <div className="mb-5">
-        <label className="form-label">
-          Pseudo
-        </label>
-        <input
-          type="text"
-          className={`form-control ${isValidPseudo}`}
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          name="login"
-        />
-      </div>
-      <div className="mb-5">
-        <label  className="form-label">
-          Password
-        </label>
-        <input
-          type="text"
-          name="password"
-          className={`form-control ${isValidPassword}`}
-          id="exampleInputPassword1"
-        />
-      </div>
-      <div className="my-5">
-        <label  className="form-label">
-          Verification
-        </label>
-        <input
-          type="text"
-          name="verification"
-          className={`form-control ${isValidVerif}`}
-          id="exampleInputPassword1"
-        />
-      {!isValidVerif && <small>La verification doit correspondre au mot de passe</small>}
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Connection
-      </button>
-    </form>
+    <>
+      <ModalCreateAccount show={show} setShow={setShow} />
+      <form className="container col-11 col-lg-4 rounded bg-white bg-opacity-50 py-4" onSubmit={handleSubmit}>
+        <h2 className="mb-5">Vous n'étes pas connecté...</h2>
+        <div className="mb-5">
+          <h4>
+            Connection
+          </h4>
+          <label className="form-label">
+            Identifiant de connection
+          </label>
+          <input
+            type="text"
+            className={`form-control `}
+            aria-describedby="emailHelp"
+            name="login"
+          />
+        </div>
+        <div className="mb-5">
+          <label  className="form-label">
+            Mot de passe
+          </label>
+          <input
+            type="text"
+            name="password"
+            className={`form-control `}
+          />
+        </div>
+        <div className="my-5">
+          <label  className="form-label">
+            Saisissez à nouveau le mot de passe
+          </label>
+          <input
+            type="text"
+            name="verification"
+            className={`form-control `}
+          />
+          <small>La verification doit correspondre au mot de passe</small>
+        </div>
+        <div className="d-flex justify-content-between">
+          <button type="submit" className="btn btn-primary">
+            Connection
+          </button>
+          <button className="btn" onClick={()=>setShow(true)}>Créer un compte</button>
+        </div>
+      </form>  
+    </>
   );
 }
 

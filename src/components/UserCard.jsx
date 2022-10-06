@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../services/AuthContext'
 
-function UserCard({setIsEdit, isEdit, setAuth}) {
+function UserCard({setIsEdit}) {
     const [Data, setData] = useState({})
     const navigate = useNavigate()
 
+    const{auth, setAuth} = useContext(AuthContext)
+
     useEffect(() => {
         let token = document.cookie.split("=").pop()
-        console.log(token)
-        fetch(`http://localhost:5000/api/hikkers/1?with=paths`, {
+        fetch(`http://localhost:5000/api/hikkers/${auth.hikkerId}?with=paths`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -21,7 +23,7 @@ function UserCard({setIsEdit, isEdit, setAuth}) {
             }
           })
           .catch(err => console.log(err))
-      }, [])
+      }, [auth])
 
       const handleEdit = () => {
         setIsEdit(true)
@@ -29,8 +31,7 @@ function UserCard({setIsEdit, isEdit, setAuth}) {
       }
 
       const handleDisconnect = () => {
-        //TODO Faire la déconnection
-        setAuth(false)
+        setAuth({...auth, logged: false})
         document.cookie = "Bearer=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       }
   return (
