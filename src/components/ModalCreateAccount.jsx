@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from "react-bootstrap/Modal"
-import { regexEmailPattern, regexNamePattern, regexPasswordPattern } from '../services/regexp'
+import { regexEmailPattern, regexNamePattern, regexPasswordPattern } from '../controllers/regexp'
+import ConfirmCreateAccount from './ConfirmCreateAccount'
 
 const ModalCreateAccount = ({show, setShow}) => {
 
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [message, setMessage] = useState('')
+  
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -14,12 +18,17 @@ const ModalCreateAccount = ({show, setShow}) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData)  })
-            .then( res => res.ok ? res.json(): null
+            .then( res => res.json()
             )
             .then((json) => {
               if(json){
-                console.log(json)
+                console.log(json.message)
                 setShow(false)
+                setShowConfirm(true)
+                setTimeout(() => {
+                  setShowConfirm(false)
+                }, 2500);
+                setMessage(json.message)
               }
             })
             .catch(err => console.log(err))
@@ -27,7 +36,7 @@ const ModalCreateAccount = ({show, setShow}) => {
 
   return (
     <>
-
+    <ConfirmCreateAccount show={showConfirm} setShow={setShowConfirm} message={message}/>
     <Modal
       show={show}
       onHide={()=> setShow(false)}
@@ -42,7 +51,8 @@ const ModalCreateAccount = ({show, setShow}) => {
             Email
           </label>
           <input
-            type="text"
+            placeholder='Votre mail: Exemple@mail.com'
+            type="email"
             className={`form-control `}
             aria-describedby="emailHelp"
             name="login"
@@ -52,6 +62,7 @@ const ModalCreateAccount = ({show, setShow}) => {
             Pseudo
           </label>
           <input
+            placeholder='Jean Neige'
             type="text"
             className={`form-control `}
             name="pseudo"
@@ -61,7 +72,7 @@ const ModalCreateAccount = ({show, setShow}) => {
             Mot de passe
           </label>
           <input
-            type="text"
+            type="password"
             className={`form-control `}
             name="password"
             pattern={regexPasswordPattern}
@@ -79,7 +90,7 @@ const ModalCreateAccount = ({show, setShow}) => {
           <button type="submit" className="btn btn-primary">
             Créer le compte
           </button>
-          <button className="btn btn-danger" onClick={()=> setShow(false)}>
+          <button type="button" className="btn btn-danger" onClick={()=> setShow(false)}>
             Close
           </button>
         </Modal.Footer>   

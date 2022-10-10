@@ -12,7 +12,7 @@ import Tiles from "./Tiles";
 
 const center = [50.15, 3.35];
 
-function Map({ setMap , isEdit }) {
+function Map({ setMap , isEdit , thumbnail = false}) {
   
   useEffect(() => {
     let initMapLayer = localStorage.getItem("Leaflet-paths")//fetch
@@ -88,6 +88,7 @@ function Map({ setMap , isEdit }) {
       scrollWheelZoom={true}
       doubleClickZoom={false}
       ref={setMap}
+      className={thumbnail ? 'card-height': 'l-container'}
     >
     
       <LayersControl position="topright">{<Tiles />}</LayersControl>

@@ -1,17 +1,24 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../services/AuthContext";
+import { AuthContext } from "../controllers/AuthContext";
 import ModalCreateAccount from "./ModalCreateAccount";
-import { regexPassword } from "../services/regexp";
+import { regexPassword } from "../controllers/regexp";
 
 function FormToConnect() {
     const [show, setShow] = useState(false);
+    const [errMsgId, setErrMsgId] = useState("")
+    const [errMsgPassword, setErrMsgPassword] = useState("")
+    const [errMsgVerrif, setErrMsgVerrif] = useState("")
 
-    const {auth, setAuth} = useContext(AuthContext)
+    const {setAuth} = useContext(AuthContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const formData = Object.fromEntries(new FormData(e.target));
     const {login, password, verification} = formData;
+    
+    login.length > 2 ? setErrMsgId(''): setErrMsgId("Identifiant incorrect")
+    regexPassword.test(password.trim()) ? setErrMsgPassword(''): setErrMsgPassword("Mot de passe non-valide")
+    verification === password ? setErrMsgVerrif('') : setErrMsgVerrif('text-danger h6')
 
     if (regexPassword.test(password.trim()) && login.length > 2 && verification === password) {
       fetch("http://localhost:5000/api/login", {
@@ -20,14 +27,15 @@ function FormToConnect() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)  })
-        .then( res => res.ok ? res.json(): null
+        .then( res => res.json()
         )
         .then((json) => {
+          console.log(json)
+          setErrMsgPassword(json.message)
           if(json){
-            console.log(json)
             const {token, data:{hikkerId, isAdmin}} = json
-            document.cookie = `Bearer=${token.access_token}; path="/"`
-            setAuth({...auth,isAdmin,hikkerId,logged:true})
+            document.cookie = `Bearer=${token.access_token}; path="/"; max-age=${60*60*24}`;
+            setAuth({isAdmin,hikkerId,logged:true})
           }
         })
         .catch(err => console.log(err))
@@ -52,6 +60,9 @@ function FormToConnect() {
             aria-describedby="emailHelp"
             name="login"
           />
+        {errMsgId && <h6 className="text-danger">
+          {errMsgId}
+        </h6>}
         </div>
         <div className="mb-5">
           <label  className="form-label">
@@ -62,6 +73,9 @@ function FormToConnect() {
             name="password"
             className={`form-control `}
           />
+          {errMsgPassword && <h6 className="text-danger">
+          {errMsgPassword}
+        </h6>}
         </div>
         <div className="my-5">
           <label  className="form-label">
@@ -72,7 +86,7 @@ function FormToConnect() {
             name="verification"
             className={`form-control `}
           />
-          <small>La verification doit correspondre au mot de passe</small>
+          <small className={`${errMsgVerrif}`}>La verification doit correspondre au mot de passe</small>
         </div>
         <div className="d-flex justify-content-between">
           <button type="submit" className="btn btn-primary">

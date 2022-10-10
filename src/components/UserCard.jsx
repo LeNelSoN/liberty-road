@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../services/AuthContext'
+import { AuthContext } from '../controllers/AuthContext'
 
 function UserCard({setIsEdit}) {
     const [Data, setData] = useState({})
@@ -9,8 +9,8 @@ function UserCard({setIsEdit}) {
     const{auth, setAuth} = useContext(AuthContext)
 
     useEffect(() => {
-        let token = document.cookie.split("=").pop()
-        fetch(`http://localhost:5000/api/hikkers/${auth.hikkerId}?with=paths`, {
+      const token = document.cookie?.split(';').filter(value => value.includes('Bearer'))[0]?.split('=')[1]
+      fetch(`http://localhost:5000/api/hikkers/${auth.hikkerId}?with=paths`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -31,7 +31,11 @@ function UserCard({setIsEdit}) {
       }
 
       const handleDisconnect = () => {
-        setAuth({...auth, logged: false})
+        setAuth({       
+          logged:false,
+          isAdmin:false,
+          hikkerId:0
+        })
         document.cookie = "Bearer=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       }
   return (
