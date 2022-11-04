@@ -12,7 +12,6 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         
         const token = document.cookie?.split(';').filter(value => value.includes('Bearer'))[0]?.split('=')[1]
-        console.log(token)
             if(token){
                 fetch('http://localhost:5000/api/check',{
                     method: 'GET',
@@ -30,8 +29,6 @@ export const AuthProvider = ({children}) => {
                 }
     }, [])
     
-
-
     return (
         <AuthContext.Provider value={{auth, setAuth}}>
             {children}

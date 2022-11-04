@@ -10775,4 +10775,21 @@ textarea.form-control-lg {
   background-size: cover;
 }
 
+.bckgnd {
+  height: 115vh;
+  width: 100%;
+  background-image: url("../public/img/Non-Connecté.jpg");
+  background-size: cover;
+  background-position: 80%;
+  background-attachment: fixed;
+}
+
+.h-90 {
+  height: 90vh;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=index.css.map */

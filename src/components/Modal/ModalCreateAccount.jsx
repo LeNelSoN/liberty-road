@@ -1,32 +1,33 @@
 import React, { useState } from 'react'
 import Modal from "react-bootstrap/Modal"
-import { regexEmailPattern, regexNamePattern, regexPasswordPattern } from '../controllers/regexp'
-import ConfirmCreateAccount from './ConfirmCreateAccount'
+import ModalHeader from 'react-bootstrap/ModalHeader'
+import { regexEmailPattern, regexNamePattern, regexPasswordPattern } from '../../components/Services/regexp'
+import { ToFetch } from '../../components/Services/ToFetchClass'
+import Confirm from './Confirm'
 
-const ModalCreateAccount = ({show, setShow}) => {
+const ModalCreateAccount = ({show, setShowModalCreate}) => {
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [message, setMessage] = useState('')
-  
+  const [disabledBtn, setDisabledBtn] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault()
         const formData = Object.fromEntries(new FormData(e.target));
-        fetch("http://localhost:5000/api/registration", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)  })
-            .then( res => res.json()
-            )
+        if (formData.login !=="") {
+          setDisabledBtn(true)
+        } 
+        
+          const toFetch = new ToFetch("/registration", 'POST', formData)
+          toFetch.launch()
             .then((json) => {
               if(json){
                 console.log(json.message)
-                setShow(false)
+                setShowModalCreate(false)
                 setShowConfirm(true)
                 setTimeout(() => {
                   setShowConfirm(false)
+                  setDisabledBtn(false)
                 }, 2500);
                 setMessage(json.message)
               }
@@ -36,16 +37,16 @@ const ModalCreateAccount = ({show, setShow}) => {
 
   return (
     <>
-    <ConfirmCreateAccount show={showConfirm} setShow={setShowConfirm} message={message}/>
+    <Confirm show={showConfirm} setShow={setShowConfirm} message={message} title={'Creation de Compte'}/>
     <Modal
       show={show}
-      onHide={()=> setShow(false)}
+      onHide={()=> setShowModalCreate(false)}
       backdrop='static'
       keyboard={false}>
       <form onSubmit={handleSubmit}>
-        <Modal.Header closeButton>
+        <ModalHeader closeButton >
           <Modal.Title>Creation de Compte</Modal.Title>
-        </Modal.Header>
+        </ModalHeader>
         <Modal.Body>
           <label className="form-label">
             Email
@@ -87,10 +88,11 @@ const ModalCreateAccount = ({show, setShow}) => {
           />   
           </Modal.Body>
         <Modal.Footer>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" disabled={disabledBtn}>
+            {disabledBtn && <span className="spinner-grow spinner-grow-sm me-2"></span>}
             Créer le compte
           </button>
-          <button type="button" className="btn btn-danger" onClick={()=> setShow(false)}>
+          <button type="button" className="btn btn-danger" onClick={()=> {setShowModalCreate(false)}}>
             Close
           </button>
         </Modal.Footer>   

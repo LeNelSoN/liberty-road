@@ -1,7 +1,7 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal"
 
-const ConfirmCreateAccount = ({show, setShow, message}) => {
+const Confirm = ({show, setShow, message, title}) => {
 
 
 
@@ -13,7 +13,7 @@ const ConfirmCreateAccount = ({show, setShow, message}) => {
       keyboard={false}
       >
       <Modal.Header>
-        <Modal.Title>Création de Compte</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
         <Modal.Body>
           <p>{message}</p>
@@ -23,4 +23,4 @@ const ConfirmCreateAccount = ({show, setShow, message}) => {
   )
 }
 
-export default ConfirmCreateAccount
+export default Confirm

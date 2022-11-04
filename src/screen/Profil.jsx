@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import FormToConnect from '../components/FormToConnect'
+import FormToConnect from '../components/Form/FormToConnect'
 import UserCard from '../components/UserCard'
-import { AuthContext } from '../controllers/AuthContext'
+import { AuthContext } from '../components/Services/AuthContext'
 
 const Profil = ({setIsEdit}) => {
   const {auth} = useContext(AuthContext)
