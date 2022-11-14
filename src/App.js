@@ -6,6 +6,7 @@ import Profil from "./screen/Profil";
 import { AuthProvider } from "./components/Services/AuthContext";
 import Paths from "./screen/Paths";
 import Recuperation from "./screen/Recuperation";
+import Screen404 from "./screen/Screen404";
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
                 <Route exact path="/profil" element={<Profil setIsEdit={setIsEdit} />} />
                 <Route exact path="/" element={<Home isEdit={isEdit} setMap={setMap} setIsEdit={setIsEdit}/>} />
                 <Route exact path="/paths" element={<Paths />} />
-                <Route path="*" />         
+                <Route path="*" element={<Screen404 />}/>         
             </Route>
             <Route path="/recuperation/:token" element={<Recuperation />} />
         </Routes>

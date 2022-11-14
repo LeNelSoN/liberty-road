@@ -1,20 +1,16 @@
 export class ToFetch {
     /**
-     * 
      * @param {string} endpoint /endpoint
      * @param {string} method GET, POST, PATCH, PUT ...
-     * @param {object} requestBody 
-     * @param {string} token 
+     * @param {object} requestBody JSON
+     * @param {string} token Bearer Token
      */
-    constructor(endpoint, method, requestBody, token) {
+    constructor(endpoint, method, requestBody) {
 
         this.endpoint = endpoint;
         this.method = method;
         this.requestBody = requestBody;
 
-        if(token){
-            this.token = token
-        }
         this.token = document.cookie?.split(';').filter(value => value.includes('Bearer'))[0]?.split('=')[1];
         
         this.requestObject = this.#requestObjectConstructor();
@@ -51,8 +47,9 @@ export class ToFetch {
 
     }
 
+
     async launch(){
-        const response = await fetch(`http://localhost:5000/api${this.endpoint}`, this.requestObject)
+        const response = await fetch(`http://localhost:8080/api${this.endpoint}`, this.requestObject )
         
         if(!response.ok){
 

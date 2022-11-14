@@ -1,6 +1,5 @@
 import React from 'react'
 import BtnDelete from '../Button/BtnDelete'
-import BtnUpdate from '../Button/BtnUpdate'
 import MapCard from './MapCard'
 
 const PathCard = ({id, name, description, createdAt}) => {
@@ -20,7 +19,6 @@ const PathCard = ({id, name, description, createdAt}) => {
     </div>
     <div className='col-md-1 text-center'>
       <BtnDelete id={id}/> 
-      <BtnUpdate/> 
     </div>
   </div>
 </div>  

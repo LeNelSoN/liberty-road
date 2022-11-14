@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
+import { ToFetch } from './ToFetchClass'
 
 export const AuthContext = createContext()
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({children}) => {
         
         const token = document.cookie?.split(';').filter(value => value.includes('Bearer'))[0]?.split('=')[1]
             if(token){
-                fetch('http://localhost:5000/api/check',{
+                fetch('http://localhost:8080/api/check',{
                     method: 'GET',
                     credentials: "include",
                     headers: {
@@ -21,9 +22,9 @@ export const AuthProvider = ({children}) => {
                     }})
                     .then(res => res.ok ? res.json():null)
                     .then(({data:{isAdmin, hikkerId}}) => {
-                        document.cookie = `Bearer=${token}; path="/"; max-age=${60*60*24}`;
                         setAuth({isAdmin, logged: true, hikkerId})
                     })
+                    .catch(err=>console.log(err))
                 }else{
                     setAuth({isAdmin:false, logged: false, hikkerId:0})
                 }
