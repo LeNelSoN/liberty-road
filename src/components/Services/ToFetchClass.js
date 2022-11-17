@@ -51,12 +51,12 @@ export class ToFetch {
     async launch(){
         const response = await fetch(`http://localhost:8080/api${this.endpoint}`, this.requestObject )
         
-        if(!response.ok){
+        // if(!response.ok){
 
-            const message = `Une Erreur s'est produite: ${response.status}`;
-            throw new Error(message);
+        //     const message = `Une Erreur s'est produite: ${response.status}`;
+        //     throw new Error(message);
     
-        }
+        // }
         
         return response.json();
     }

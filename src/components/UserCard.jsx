@@ -57,10 +57,9 @@ function UserCard({setIsEdit}) {
         <button className='btn btn-outline-success rounded-pill mt-3 me-3' onClick={()=>{setIsUpdate(!isUpdate)}}><SlOptionsVertical/></button>
       </div>
         <div className='pb-5 '>
-          {auth.isAdmin ? 'GOD MODE': ''}
-          <h2 className='mb-4'>{Data.hikker?.username}</h2>
+          <h2 className='mb-4'>{!auth.isAdmin && Data.hikker?.username}</h2>
           <div>
-              <p>Votre havre de paix : {Data.hikker?.address}</p>
+              <p>Votre havre de paix : {!auth.isAdmin && Data.hikker?.address}</p>
           </div>
           <div>
               <p>{Data.paths?.length} chemin{Data.paths?.length < 2 ? "": "s" } vers la liberté enregistré{Data.paths?.length < 2 ? "": "s" }</p> 

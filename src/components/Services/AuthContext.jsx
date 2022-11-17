@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { ToFetch } from './ToFetchClass'
 
 export const AuthContext = createContext()
 
@@ -22,11 +21,13 @@ export const AuthProvider = ({children}) => {
                     }})
                     .then(res => res.ok ? res.json():null)
                     .then(({data:{isAdmin, hikkerId}}) => {
-                        setAuth({isAdmin, logged: true, hikkerId})
+                        setAuth({isAdmin, logged: true, hikkerId:0})
+                        console.log(auth)
                     })
                     .catch(err=>console.log(err))
                 }else{
                     setAuth({isAdmin:false, logged: false, hikkerId:0})
+                    console.log(auth)
                 }
     }, [])
     
