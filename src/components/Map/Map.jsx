@@ -25,7 +25,6 @@ function Map({center, mapLayers , setMapLayers, setMap, isEdit, setIsEdit, thumb
   const [showConfirm, setShowConfirm] = useState(false)
   const [message, setMessage] = useState('')
 
-
   const onCreate = (e) => {
     const { layerType, layer } = e;
     if (layerType === "polyline") {
@@ -146,7 +145,7 @@ function Map({center, mapLayers , setMapLayers, setMap, isEdit, setIsEdit, thumb
           marker: false,
         }}
       />
-      </FeatureGroup>
+    </FeatureGroup>
       } 
       {Path}
       {children}
