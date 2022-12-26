@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Map from './Map'
 import PathsPolyline from './PathsPolyline'
 import { useNavigate } from 'react-router-dom'
-import { ToFetch } from '../../components/Services/ToFetchClass'
+import { doFetch } from '../Services/doFetch'
 
 const MapCard = ({id, withNavigate = true}) => {
 
@@ -11,8 +11,7 @@ const MapCard = ({id, withNavigate = true}) => {
 
     useEffect(() => {
       
-        const toFetch = new ToFetch(`/paths/${id}?with=latlongs`, 'GET');
-        toFetch.launch()
+        doFetch(`/paths/${id}?with=latlongs`, 'GET')
           .then(({data:{latlongs}}) => {
             console.log(latlongs[0])
             if(latlongs){

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import { ToFetch } from '../../components/Services/ToFetchClass'
+import { doFetch } from '../Services/doFetch'
 import Confirm from './Confirm'
 
 const ModalNewPassword = ({show, setShowModalNewPassword}) => {
@@ -16,8 +16,7 @@ const ModalNewPassword = ({show, setShowModalNewPassword}) => {
         if (formData.login !=="") {
           setDisabledBtn(true)
         } 
-        const toFetch = new ToFetch(`/recuperation`, 'POST', formData) 
-        toFetch.launch()
+        doFetch(`/recuperation`, 'POST', formData) 
           .then((json) => {
             if(json){
               console.log(json.message)

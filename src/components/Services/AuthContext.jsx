@@ -21,7 +21,7 @@ export const AuthProvider = ({children}) => {
                     }})
                     .then(res => res.ok ? res.json():null)
                     .then(({data:{isAdmin, hikkerId}}) => {
-                        setAuth({isAdmin, logged: true, hikkerId:0})
+                        setAuth({isAdmin, logged: true, hikkerId})
                         console.log(auth)
                     })
                     .catch(err=>console.log(err))

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PathCard from './Map/PathCard';
-import { ToFetch } from './Services/ToFetchClass';
+import { doFetch } from './Services/doFetch';
 
 const User = ({id, username, address, login}) => {
 
@@ -17,9 +17,8 @@ const User = ({id, username, address, login}) => {
     
     const getPaths = (id) => {
 
-        const toFetch = new ToFetch(`/hikkers/${id}?with=paths`, 'GET')
-        toFetch.launch()
-        .then( ({data:{paths}}) => {
+        doFetch(`/hikkers/${id}?with=paths`, 'GET')
+        .then(({data:{paths}}) => {
             setPaths(paths)
         } )
         .catch(err => console.error(err))

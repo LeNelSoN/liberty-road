@@ -4,7 +4,7 @@ import ModalCreateAccount from "../Modal/ModalCreateAccount";
 import { regexPassword } from "../Services/regexp";
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import ModalNewPassword from "../Modal/ModalNewPassword";
-import { ToFetch } from "../Services/ToFetchClass";
+import { doFetch } from "../Services/doFetch";
 
 
 function FormToConnect() {
@@ -36,8 +36,7 @@ function FormToConnect() {
     verification === password ? setErrMsgVerrif('') : setErrMsgVerrif('text-danger h6')
 
     if (regexPassword.test(password.trim()) && login.length > 2 && verification === password) {
-      const toFetch = new ToFetch( '/login', 'POST', formData)
-      toFetch.launch()
+      doFetch( '/login', 'POST', formData)
         .then((json) => {
           console.log(json)
           setErrMsgPassword(json.message)

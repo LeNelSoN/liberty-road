@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ToFetch } from '../Services/ToFetchClass'
+import { doFetch } from '../Services/doFetch'
 
 
 const FormToDeletedAccount = ({username, id, setShow, setAuth}) => {
@@ -12,8 +12,7 @@ const FormToDeletedAccount = ({username, id, setShow, setAuth}) => {
         console.log(formData)
         if (formData.username === formData.usernameConfirm && formData.username === username) {
            setDisabledBtn(true)
-           const toFetch = new ToFetch(`/hikkers/${id}`, 'PATCH', formData) 
-           toFetch.launch()
+           doFetch(`/hikkers/${id}`, 'PATCH', formData) 
                .then((json) => {
                  if(json){
                    console.log(json.message)

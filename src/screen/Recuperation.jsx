@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { regexPassword } from "../components/Services/regexp";
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useParams } from "react-router-dom";
-import { ToFetch } from "../components/Services/ToFetchClass";
+import { doFetch } from "../components/Services/doFetch";
 
 function Recuperation() {
     const [errMsgId, setErrMsgId] = useState("")
@@ -25,8 +25,7 @@ function Recuperation() {
     verification === password ? setErrMsgVerrif('') : setErrMsgVerrif('text-danger h6')
     if (regexPassword.test(password.trim()) && login.length > 2 && verification === password) {
       
-      const toFetch = new ToFetch('/reset', 'POST', {login, password}, token)
-      toFetch.launch()
+      doFetch('/reset', 'POST', {login, password}, token)
           .then((json) => {
             console.log(json)
           })

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Confirm from '../Modal/Confirm'
-import { ToFetch } from '../Services/ToFetchClass';
+import { doFetch } from '../Services/doFetch';
 
 const BtnDelete = ({id}) => {
 
@@ -9,8 +9,7 @@ const BtnDelete = ({id}) => {
 
     const handleClick = () => {
 
-    const toFetch = new ToFetch(`/paths/${id}`, 'PATCH')
-    toFetch.launch()
+    doFetch(`/paths/${id}`, 'PATCH')
       .then( (json) => {
           if(json){
             setShow(false)

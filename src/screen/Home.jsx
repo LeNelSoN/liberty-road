@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Map  from '../components/Map/Map';
 import PathsPolyline from '../components/Map/PathsPolyline';
 import { AuthContext } from '../components/Services/AuthContext'
-import { ToFetch } from '../components/Services/ToFetchClass';
+import { doFetch } from '../components/Services/doFetch';
 
 const Home = ({isEdit, setMap, setIsEdit}) => {
   const [mapLayers, setMapLayers] = useState([]);
@@ -16,8 +16,7 @@ const Home = ({isEdit, setMap, setIsEdit}) => {
 
   useEffect(() => {    
     if(auth.hikkerId !== 0){
-      const toFetch = new ToFetch(`/hikkers/${auth.hikkerId}?with=paths`, 'GET')
-        toFetch.launch()
+      doFetch(`/hikkers/${auth.hikkerId}?with=paths`, 'GET')
           .then(({data:{paths}}) => setMapLayers(paths))
           .catch(err => console.log(err))
     }  

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Polyline, Popup } from 'react-leaflet'
-import { ToFetch } from '../Services/ToFetchClass';
+import { doFetch } from '../Services/doFetch';
 
 const PathsPolyline = ({id}) => {
 
@@ -9,8 +9,7 @@ const PathsPolyline = ({id}) => {
 
   useEffect(() => {
     
-    const toFetch = new ToFetch(`/paths/${id}?with=latlongs`, 'GET')
-    toFetch.launch()
+    doFetch(`/paths/${id}?with=latlongs`, 'GET')
       .then(({data:{latlongs}}) => {
         if(latlongs){
           setLatlongs([latlongs])

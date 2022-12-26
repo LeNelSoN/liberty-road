@@ -3,17 +3,18 @@ import { AuthContext } from '../components/Services/AuthContext'
 import NewPath from './Modal/NewPath'
 import { SlOptionsVertical } from 'react-icons/sl';
 import ModalUpdate from './Modal/ModalUpdate';
-import { ToFetch } from '../components/Services/ToFetchClass';
+import BtnDisconnect from './Button/BtnDisconnect';
+import { doFetch } from './Services/doFetch';
 
 function UserCard({setIsEdit}) {
+  
     const [Data, setData] = useState({})
     const [showPathCreate, setShowPathCreate] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
     const {auth, setAuth} = useContext(AuthContext)
 
     useEffect(() => {
-      const toFetch = new ToFetch(`/hikkers/${auth.hikkerId}?with=paths`, 'GET')
-      toFetch.launch()
+      doFetch(`/hikkers/${auth.hikkerId}?with=paths`, 'GET')
           .then((data) => {
             console.log(data)
             if(data){
@@ -24,15 +25,6 @@ function UserCard({setIsEdit}) {
 
       const handleEdit = () => {
         setShowPathCreate(true)
-      }
-
-      const handleDisconnect = () => {
-        setAuth({       
-          logged:false,
-          isAdmin:false,
-          hikkerId:0
-        })
-        document.cookie = "Bearer=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       }
 
   return (
@@ -66,7 +58,7 @@ function UserCard({setIsEdit}) {
           </div>
           <div className='d-flex flex-column mx-5 mt-5'>
               <button className='btn btn-success' onClick={handleEdit}>Voulez-vous créer un nouveau chemin ?</button>
-              <button className='btn btn-danger mt-3' onClick={handleDisconnect}>Déconnection</button>
+              <BtnDisconnect/>
           </div>
         </div>
       </div>

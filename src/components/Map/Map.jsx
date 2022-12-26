@@ -12,7 +12,7 @@ import { AuthContext } from '../../components/Services/AuthContext'
 import { useContext, useState } from "react";
 import ModalNewPath from "../Modal/ModalNewPath";
 import Confirm from "../Modal/Confirm";
-import { ToFetch } from "../../components/Services/ToFetchClass";
+import { doFetch } from "../Services/doFetch";
 
 
 function Map({center, mapLayers , setMapLayers, setMap, isEdit, setIsEdit, thumbnail = false, zoom = 9 ,children}) {
@@ -56,8 +56,7 @@ function Map({center, mapLayers , setMapLayers, setMap, isEdit, setIsEdit, thumb
     setDisabledBtn(true)
     setIsEdit(!isEdit)
 
-    const toFetch = new ToFetch('/paths', 'POST', BodyToFetch);
-    toFetch.launch()
+    doFetch('/paths', 'POST', BodyToFetch)
       .then((json) => {
         if(json){
           setShow(false)

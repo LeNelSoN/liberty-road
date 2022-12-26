@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { regexNamePattern } from '../../components/Services/regexp'
 import Confirm from './Confirm'
-import { ToFetch } from '../../components/Services/ToFetchClass';
 import FormToDeletedAccount from '../Form/FormToDeletedAccount';
+import { doFetch } from '../Services/doFetch';
 
 
 const ModalUpdate = ({show, setShow, username, address, id, setAuth}) => {
@@ -28,8 +28,7 @@ const ModalUpdate = ({show, setShow, username, address, id, setAuth}) => {
           setDisabledBtn(true)
         } 
         
-        const toFetch = new ToFetch(`/hikkers/${id}`, 'PUT', formData) 
-        toFetch.launch()
+        doFetch(`/hikkers/${id}`, 'PUT', formData) 
             .then((json) => {
               if(json){
                 console.log(json.message)

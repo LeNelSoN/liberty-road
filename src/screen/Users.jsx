@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap';
-import { ToFetch } from '../components/Services/ToFetchClass'
+import BtnDisconnect from '../components/Button/BtnDisconnect';
+import { doFetch } from '../components/Services/doFetch';
 import User from '../components/User'
 
 const Users = () => {
@@ -9,9 +10,9 @@ const Users = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const doFetch = new ToFetch('/hikkers', 'GET')
     setLoading(true);
-    doFetch.launch().then(({data}) => {
+    doFetch('/hikkers', 'GET')
+      .then(({data}) => {
       setUsers(data);
       setLoading(false);
     })
@@ -19,6 +20,7 @@ const Users = () => {
 
   return (
   <div className='container my-5 pb-3'>
+    <BtnDisconnect/>
     {
       loading ?
         <Spinner/>

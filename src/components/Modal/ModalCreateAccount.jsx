@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from "react-bootstrap/Modal"
 import ModalHeader from 'react-bootstrap/ModalHeader'
 import { regexEmailPattern, regexNamePattern, regexPasswordPattern } from '../../components/Services/regexp'
-import { ToFetch } from '../../components/Services/ToFetchClass'
+import { doFetch } from '../Services/doFetch'
 import Confirm from './Confirm'
 
 const ModalCreateAccount = ({show, setShowModalCreate}) => {
@@ -18,8 +18,7 @@ const ModalCreateAccount = ({show, setShowModalCreate}) => {
           setDisabledBtn(true)
         } 
         
-          const toFetch = new ToFetch("/registration", 'POST', formData)
-          toFetch.launch()
+          doFetch("/registration", 'POST', formData)
             .then((json) => {
               if(json){
                 console.log(json.message)
